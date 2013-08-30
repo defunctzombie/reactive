@@ -1,5 +1,5 @@
 
-var reactive = require('reactive');
+var reactive = require('../');
 var Emitter = require('emitter');
 var classes = require('classes');
 var domify = require('domify');
