@@ -30,6 +30,16 @@
   "scripts": {
     "test": "zuul test/*.js"
   },
+  "testling": {
+    "files": "test/*.js",
+    "browsers": [
+      "ie8..latest",
+      "ff/13..latest",
+      "chrome/20..latest",
+      "safari/5.1..latest"
+    ],
+    "harness": "mocha-bdd"
+  },
   "component": {
     "scripts": {
       "reactive/index.js": "lib/index.js",
