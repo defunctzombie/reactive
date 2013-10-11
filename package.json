@@ -7,7 +7,7 @@
   "dependencies": {
     "classes-component": "1.1.3",
     "event-component": "0.1.0",
-    "query-component": "*",
+    "query-component": "0.0.1",
     "props-component": "1.0.3",
     "format-parser": "0.0.2",
     "debug": "*"
