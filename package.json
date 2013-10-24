@@ -23,11 +23,20 @@
     "classes": "classes-component",
     "event": "event-component",
     "query": "query-component",
-    "props": "props-component"
+    "props": "props-component",
+    "emitter": "emitter-component",
+    "clone": "clone-component"
   },
   "devDependencies": {
+    "domify": "*",
+    "emitter-component": "*",
     "better-assert": "*",
-    "mocha": "*"
+    "mocha": "*",
+    "zuul": "~0.2.1",
+    "clone-component": "defunctzombie/clone#884089"
+  },
+  "scripts": {
+    "test": "zuul test/*.js"
   },
   "component": {
     "scripts": {

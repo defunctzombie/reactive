@@ -1,7 +1,8 @@
 
-var reactive = require('reactive');
 var domify = require('domify');
 var assert = require('assert');
+
+var reactive = require('../');
 
 describe('reactive.bind(name, fn)', function(){
   it('should define a new binding', function(done){

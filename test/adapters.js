@@ -1,8 +1,10 @@
-var reactive = require('reactive');
 var domify = require('domify');
 var assert = require('assert');
 var Emitter = require('emitter');
 var clone = require('clone');
+
+var reactive = require('../');
+
 var adapter = clone(reactive.adapter);
 
 // simplified backbone adapter

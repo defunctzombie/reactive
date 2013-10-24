@@ -1,8 +1,9 @@
 
 var Emitter = require('emitter');
-var reactive = require('reactive');
 var domify = require('domify');
 var assert = require('assert');
+
+var reactive = require('../');
 
 describe('text interpolation', function(){
   it('should support initialization', function(){
