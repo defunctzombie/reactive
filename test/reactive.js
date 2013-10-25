@@ -14,6 +14,14 @@ describe('reactive(el, obj)', function(){
     assert('Tobi' == el.children[0].textContent);
   })
 
+  it('should set values via a set method', function(){
+    var el = domify('<div><p data-text="name"></p></div>');
+    var user = { name: 'Tobi' };
+    var view = reactive(el, user);
+    view.set('name', 'TJ');
+    assert('TJ' == el.children[0].textContent);
+  })
+
   it('should work with multiple bindings', function(){
     var el = domify('<div><span data-text="first"></span><span data-text="last"></span></div>');
     var user = { first: 'Tobi', last: 'Ferret' };

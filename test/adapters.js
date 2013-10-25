@@ -8,28 +8,41 @@ var reactive = require('../');
 var adapter = clone(reactive.adapter);
 
 // simplified backbone adapter
+var BackboneAdapter = function(reactive, model, key) {
+  var self = this;
+  self._model = model;
+  self._key = key;
 
-function subscribe(obj, prop, fn) {
-  obj.on('change:' + prop, fn);
-}
+  model.on('change:' + key, self._handler = function() {
+    self._setting = true;
+    reactive.set(key, reactive.get(key));
+    self._setting = false;
+  });
+};
 
-function unsubscribe(obj, prop, fn) {
-  // TODO: remove check when emitter updated
-  // https://github.com/component/emitter/pull/25
-  if (!fn) {
-    obj.off('change:' + prop);
-  } else {
-    obj.off('change:' + prop, fn);
+BackboneAdapter.prototype.get = function() {
+  var self = this;
+  return self._model.get(self._key);
+};
+
+BackboneAdapter.prototype.set = function(val) {
+  var self = this;
+
+  if (self._setting) {
+    return;
   }
-}
 
-function set(obj, prop, val) {
-  obj.set(prop, val);
-}
+  self._model.set(self._key, val);
+};
 
-function get(obj, prop) {
-  return obj.get(prop);
-}
+BackboneAdapter.prototype.teardown = function() {
+  var self = this;
+  if (!self._handler) {
+    return;
+  }
+
+  self._model.off('change:' + self._key, self._handler);
+};
 
 // Backbone-like Model
 
@@ -55,18 +68,12 @@ describe('custom adapter', function() {
   var el, person;
 
   before(function() {
-    reactive.subscribe(subscribe);
-    reactive.unsubscribe(unsubscribe);
-    reactive.set(set);
-    reactive.get(get);
+    reactive.adapter = BackboneAdapter;
   });
 
   // go back to defaults to prevent leaking
   after(function() {
-    reactive.subscribe(adapter.subscribe);
-    reactive.unsubscribe(adapter.unsubscribe);
-    reactive.set(adapter.set);
-    reactive.get(adapter.get);
+    reactive.adapter = undefined;
   });
 
   beforeEach(function() {
@@ -82,8 +89,15 @@ describe('custom adapter', function() {
 
   it('shouldnt update view after being unsubscribed', function() {
     var react = reactive(el, person);
-    react.unsub('name');
+    assert('Matt' == el.children[0].textContent);
+
+    // should unbind any handlers to the model and any internal handlers
+    react.destroy();
+
     person.set('name', 'TJ');
+    assert('Matt' == el.children[0].textContent);
+
+    react.set('name', 'TJ');
     assert('Matt' == el.children[0].textContent);
   });
 
