@@ -171,6 +171,15 @@ describe('data-hide', function(){
     var view = reactive(el, item);
     assert('file hide' == el.children[0].className);
   })
+
+  it('should respect settings:hide-class', function(){
+    var el = domify('<div><p data-hide="file">Has a file</p></div>');
+    var item = { file: 'some.png' };
+    reactive.settings.set('hide-class', 'hidden');
+    var view = reactive(el, item);
+    assert('hidden' == el.children[0].className);
+    reactive.settings.set('hide-class', 'hide'); //reset
+  });
 })
 
 describe('data-checked', function(){
