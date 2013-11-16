@@ -60,13 +60,13 @@ describe('reactive(el, obj)', function(){
     assert('Tobi Ferret' == el.children[0].textContent);
   })
 
-  // it('should support the root element', function(){
-  //   var el = domify('<p data-text="name"></p>')[0];
-  //   var user = { name: 'Tobi' };
-  //   reactive(el, user);
-  //   console.log(el);
-  //   assert('Tobi' == el.textContent);
-  // })
+  it('should support the root element', function(){
+    var el = domify('<p data-text="name"></p>');
+    var user = { name: 'Tobi' };
+    reactive(el, user);
+    console.log(el);
+    assert('Tobi' == el.textContent);
+  })
 })
 
 describe('on "change <name>"', function(){
