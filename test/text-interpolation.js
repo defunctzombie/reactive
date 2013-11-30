@@ -60,19 +60,6 @@ describe('text interpolation', function(){
     assert('tobi ferret' == el.textContent);
   })
 
-  it('should support model method calls', function(){
-    var el = domify('<p>first: {first()}</p>');
-
-    var pet = {
-      first: function(){
-        return 'Loki'
-      }
-    };
-
-    reactive(el, pet);
-    assert('first: Loki' == el.textContent);
-  })
-
   it('should support model method calls as properties', function(){
     var el = domify('<p>first: {first}</p>');
 
@@ -106,19 +93,6 @@ describe('text interpolation', function(){
     pet.emit('change siblings');
 
     assert('first: Loki, last: Abby' == el.textContent);
-  })
-
-  it('should support complex model method calls', function(){
-    var el = domify('<p>name: {casual() ? first() : first() + " " + last()}</p>');
-
-    var pet = {
-      casual: function(){ return false },
-      first: function(){ return 'Loki' },
-      last: function(){ return 'the Pet' }
-    };
-
-    reactive(el, pet);
-    assert('name: Loki the Pet' == el.textContent);
   })
 
   it('should support complex model method calls as properties', function(){
