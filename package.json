@@ -30,11 +30,12 @@
     "emitter-component": "*",
     "better-assert": "*",
     "mocha": "*",
-    "zuul": "~0.2.1",
+    "zuul": "~1.0.0",
     "clone-component": "defunctzombie/clone#884089"
   },
   "scripts": {
-    "test": "zuul test/*.js"
+    "test": "zuul test/*.js",
+    "test-local": "zuul --local 8080 test/*.js"
   },
   "component": {
     "scripts": {
