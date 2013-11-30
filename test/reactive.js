@@ -31,7 +31,7 @@ describe('reactive(el, obj)', function(){
   })
 
   it('should support getter methods', function(){
-    var el = domify('<div><p data-text="first"></p></div>');
+    var el = domify('<div><p>{first}</p></div>');
 
     var user = {
       _first: 'Tobi',
@@ -64,9 +64,23 @@ describe('reactive(el, obj)', function(){
     var el = domify('<p data-text="name"></p>');
     var user = { name: 'Tobi' };
     reactive(el, user);
-    console.log(el);
     assert('Tobi' == el.textContent);
   })
+
+  it('should support accessing nested properties', function(){
+    var el = domify('<p>{name.first} {name.last}</p>');
+
+    var user = {
+      name: {
+        first: 'Tobi',
+        last: 'Ferret'
+      }
+    };
+
+    var view = reactive(el, user);
+    assert.equal('Tobi Ferret', el.textContent);
+  })
+
 })
 
 describe('on "change <name>"', function(){
@@ -88,6 +102,44 @@ describe('on "change <name>"', function(){
     user.emit('change name');
     assert('Loki' == el.children[0].textContent);
   })
+
+  it('should update for nested properties', function() {
+    var el = domify('<p>{name.first} {name.last}</p>');
+
+    function User(fname, lname) {
+      this.name = {
+        first: fname,
+        last: lname
+      }
+    }
+
+    Emitter(User.prototype);
+
+    var user = new User('Tobi', 'Foo');
+    var view = reactive(el, user);
+
+    assert.equal('Tobi Foo', el.textContent);
+
+    user.name = {
+      first: 'Loki',
+      last: 'Bar'
+    };
+
+    user.emit('change name');
+    assert.equal('Loki Bar', el.textContent);
+
+    // now change only a subfield
+    user.name.last = 'Foobar';
+    user.emit('change name.last');
+    assert.equal('Loki Foobar', el.textContent);
+    return;
+  });
+
+  it('should not confuse properties with string vals', function() {
+    var el = domify('<p>{name ? name : \'no name given\'}</p>');
+    reactive(el, {});
+    assert.equal('no name given', el.textContent);
+  });
 })
 
 describe('data-text', function(){
