@@ -30,7 +30,7 @@
     "emitter-component": "*",
     "better-assert": "*",
     "mocha": "*",
-    "zuul": "~1.0.9",
+    "zuul": "~1.3.0",
     "clone-component": "defunctzombie/clone#884089"
   },
   "scripts": {
