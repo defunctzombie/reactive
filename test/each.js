@@ -26,6 +26,33 @@ describe('each', function(){
     assert.equal(el.children[2].textContent, 'apples');
   })
 
+  it('setting property should work', function(){
+    var el = domify('<ul><li each="todos">{this}</li></ul>');
+
+    var model = {
+      todos: ['candy']
+    };
+
+    var view = reactive(el, model);
+
+    assert.equal(el.children.length, 1);
+    assert.equal(el.children[0].textContent, 'candy');
+
+    view.set('todos', ['milk', 'cereal', 'apples']);
+
+    assert.equal(el.children.length, 3);
+    assert.equal(el.children[0].textContent, 'milk');
+    assert.equal(el.children[1].textContent, 'cereal');
+    assert.equal(el.children[2].textContent, 'apples');
+
+    view.destroy();
+    assert.equal(el.parentNode, undefined);
+
+    // this is not an no-op
+    view.set('todos', ['milk', 'cereal']);
+    assert.equal(el.children.length, 3);
+  })
+
   it('accessing properties', function(){
     var el = domify('<ul><li each="todos">{name}</li></ul>');
 
