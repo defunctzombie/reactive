@@ -72,6 +72,31 @@ describe('each', function(){
     assert.equal(el.children[2].textContent, 'apples');
   })
 
+  it('accessing view functions', function () {
+    var el = domify('<ul><li each="todos"><span data-text="name | uppercase"></span></li></ul>');
+
+    var model = {
+      todos: [
+        { name: 'milk' },
+        { name: 'cereal' },
+        { name: 'apples' }
+      ]
+    };
+
+    var view = {
+      uppercase: function (str) {
+        if (str) return str.toUpperCase();
+      }
+    };
+
+    var r = reactive(el, model, view);
+
+    assert.equal(el.children.length, 3);
+    assert.equal(el.children[0].textContent, 'MILK');
+    assert.equal(el.children[1].textContent, 'CEREAL');
+    assert.equal(el.children[2].textContent, 'APPLES');
+  });
+
   it('Array#push', function(){
     var el = domify('<ul><li each="todos">{this}</li></ul>');
 
