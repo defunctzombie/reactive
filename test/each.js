@@ -97,6 +97,29 @@ describe('each', function(){
     assert.equal(el.children[2].textContent, 'APPLES');
   });
 
+  it('calls event handlers in the context of child model', function (done) {
+    var el = domify('<ul><li each="todos"><a href="#" on-click="clicked">click</a></li></ul>');
+
+    var model = {
+      todos: [
+        { name: 'milk' },
+        { name: 'cereal' },
+        { name: 'apples' }
+      ]
+    };
+
+    var view = {
+      clicked: function (e, ctx) {
+        assert.equal(ctx.model.name, 'milk');
+        done();
+      }
+    };
+
+    var r = reactive(el, model, view);
+
+    el.firstChild.firstChild.click();
+  });
+
   it('Array#push', function(){
     var el = domify('<ul><li each="todos">{this}</li></ul>');
 
