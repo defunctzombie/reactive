@@ -44,13 +44,23 @@ describe('each', function(){
     assert.equal(el.children[0].textContent, 'milk');
     assert.equal(el.children[1].textContent, 'cereal');
     assert.equal(el.children[2].textContent, 'apples');
+  })
+
+  it('should not set after destroy', function(){
+    var el = domify('<ul><li each="todos">{this}</li></ul>');
+
+    var model = { todos: ['candy'] };
+    var view = reactive(el, model);
+
+    assert.equal(el.children.length, 1);
+    assert.equal(el.children[0].textContent, 'candy');
 
     view.destroy();
     assert.equal(el.parentNode, undefined);
 
-    // this is not an no-op
+    // this should have no effect on the children anymore
     view.set('todos', ['milk', 'cereal']);
-    assert.equal(el.children.length, 3);
+    assert.equal(el.children.length, 1);
   })
 
   it('accessing properties', function(){
