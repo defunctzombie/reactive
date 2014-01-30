@@ -227,4 +227,41 @@ describe('each', function(){
     assert.equal(el.children[2].textContent, 'cereal');
   })
 
+  // the attribute order should not matter with each bindings
+  // nothing on the each binding line should be evaluated before the each has
+  // taken over the line
+  it('other bindings', function(){
+    var el = domify('<div><div class="{cls}" each="todos">{name}</div></div>');
+
+    var model = {
+      todos: [{
+        cls: 'dairy',
+        name: 'milk'
+      }]
+    };
+
+    var view = reactive(el, model);
+
+    assert.equal(el.children.length, 1);
+    assert.equal(el.children[0].textContent, 'milk');
+    assert.equal(el.children[0].getAttribute('class'), 'dairy');
+  })
+
+  it('other bindings - flipped', function(){
+    var el = domify('<div><div each="todos" class="{cls}">{name}</div></div>');
+
+    var model = {
+      todos: [{
+        cls: 'dairy',
+        name: 'milk'
+      }]
+    };
+
+    var view = reactive(el, model);
+
+    assert.equal(el.children.length, 1);
+    assert.equal(el.children[0].textContent, 'milk');
+    assert.equal(el.children[0].getAttribute('class'), 'dairy');
+  })
+
 })
