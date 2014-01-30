@@ -64,4 +64,14 @@ describe('attr interpolation', function(){
     user.emit('change file');
     assert('/download/4321-whoop' == el.getAttribute('href'));
   })
+
+  it('should support style property via data-style', function(){
+    // IE will sanitize the style field so in order to interpolate
+    // you need to use the data-style binding to avoid the stupid parsing
+    var el = domify('<a data-style="display: {display};"></a>');
+    var view = reactive(el, {
+      display: 'none'
+    });
+    assert.equal('display: none;', el.getAttribute('style'));
+  })
 })
