@@ -133,4 +133,10 @@ describe('text interpolation', function(){
     reactive(el, user);
     assert('Hello Tobi' == el.textContent);
   })
+
+  it('should support deeply nested properties', function(){
+    var model = { foo: { bar: { baz: { rofl: 'ok' } } } };
+    var view = reactive(domify('<div>{ foo.bar.baz.rofl }</div>'), model);
+    assert('ok' == view.el.textContent);
+  })
 })
