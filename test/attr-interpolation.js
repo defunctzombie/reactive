@@ -73,5 +73,7 @@ describe('attr interpolation', function(){
       display: 'none'
     });
     assert.equal('display: none;', el.getAttribute('style'));
+    view.set('display', 'block');
+    assert.equal('display: block;', el.getAttribute('style'));
   })
 })
